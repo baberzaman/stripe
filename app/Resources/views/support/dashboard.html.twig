@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container" style="margin-top:30px">
+  <h1>Support Dashboard</h1>
+  <p>Embed on client websites:</p>
+  <pre>&lt;script&gt;
+window.SupportWidgetConfig = {
+  siteKey: 'demo-site',
+  apiBase: '{{ app.request.schemeAndHttpHost }}/api/support'
+};
+&lt;/script&gt;
+&lt;script src="{{ embedScriptUrl }}"&gt;&lt;/script&gt;</pre>
+
+  <h2>Tickets</h2>
+  <table class="table">
+    <tr><th>ID</th><th>Site</th><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Created</th></tr>
+    {% for ticket in tickets %}
+      <tr>
+        <td>{{ ticket.id }}</td><td>{{ ticket.siteKey }}</td><td>{{ ticket.name }}</td><td>{{ ticket.email }}</td><td>{{ ticket.subject }}</td><td>{{ ticket.status }}</td><td>{{ ticket.createdAt|date('Y-m-d H:i') }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7">No tickets yet.</td></tr>
+    {% endfor %}
+  </table>
+
+  <h2>Recent Chat Messages</h2>
+  <table class="table">
+    <tr><th>Site</th><th>Visitor</th><th>Sender</th><th>Message</th><th>Created</th></tr>
+    {% for message in messages %}
+      <tr>
+        <td>{{ message.siteKey }}</td><td>{{ message.visitorId }}</td><td>{{ message.sender }}</td><td>{{ message.message }}</td><td>{{ message.createdAt|date('Y-m-d H:i') }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5">No chats yet.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
